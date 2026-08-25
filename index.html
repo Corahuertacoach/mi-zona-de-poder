@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Zona de Poder</title>
+<meta name="description" content="Descubre qué te está deteniendo hoy para convertir tu experiencia en un negocio rentable y equilibrado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Netlify necesita ver este formulario "estático" en el HTML para registrarlo en el build,
+     aunque lo enviemos por JS más abajo. No se muestra a la usuaria. -->
+<form name="zona-de-poder-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="email" name="email" />
+  <input type="text" name="arquetipo" />
+  <input type="text" name="bot-field" />
+</form>
+
+<div class="app">
+
+  <!-- Barra de progreso (solo visible durante el quiz) -->
+  <div class="progress-wrap" id="progressWrap" hidden>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressLabel">Pregunta 1 de 6</span>
+  </div>
+
+  <main class="card">
+
+    <!-- 0. PANTALLA DE CONTRASEÑA -->
+    <section class="screen" id="screen-password" data-screen>
+      <p class="eyebrow">Acceso privado</p>
+      <h1 class="title">Mi Zona de Poder</h1>
+      <p class="subtitle">Este espacio es solo para ti. Ingresa tu código de acceso para comenzar.</p>
+      <form id="passwordForm" class="stack">
+        <input type="password" id="passwordInput" placeholder="Código de acceso" autocomplete="off" required>
+        <p class="error-msg" id="passwordError" hidden>Ese código no es correcto. Intenta de nuevo.</p>
+        <button type="submit" class="btn btn-primary">Entrar →</button>
+      </form>
+    </section>
+
+    <!-- 1. PANTALLA DE ENTRADA -->
+    <section class="screen" id="screen-intro" data-screen hidden>
+      <p class="eyebrow">Mi Zona de Poder</p>
+      <h1 class="title">Descubre qué te está deteniendo hoy</h1>
+      <p class="subtitle">para convertir tu experiencia en un negocio rentable y equilibrado.</p>
+      <button class="btn btn-primary" id="btnToInstructions">Descubrir mi Zona de Poder →</button>
+    </section>
+
+    <!-- 2. INSTRUCCIONES -->
+    <section class="screen" id="screen-instructions" data-screen hidden>
+      <h2 class="title-sm">Antes de empezar</h2>
+      <p class="body-text">Responde 6 preguntas rápidas y sencillas sobre tu negocio hoy.</p>
+      <p class="body-text">Al final descubrirás qué está frenando que tu experiencia se convierta en un negocio rentable y equilibrado — y hacia dónde dar tu siguiente paso.</p>
+      <button class="btn btn-primary" id="btnStartQuiz">Comenzar →</button>
+    </section>
+
+    <!-- 3. QUIZ (preguntas dinámicas) -->
+    <section class="screen" id="screen-quiz" data-screen hidden>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options" id="optionsContainer"></div>
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" id="btnBack">← Atrás</button>
+      </div>
+    </section>
+
+    <!-- 4. RESULTADO -->
+    <section class="screen" id="screen-result" data-screen hidden>
+      <div class="result-visual" id="resultVisual"></div>
+      <p class="eyebrow" id="resultBlockLabel"></p>
+      <h2 class="title-sm" id="resultName"></h2>
+      <p class="body-text" id="resultDescription"></p>
+      <p class="body-text small-note">Esto es lo que te está deteniendo hoy. El siguiente paso — la llamada — es donde resolvemos el qué hacer con eso.</p>
+
+      <form id="emailForm" class="stack email-form">
+        <label class="field-label" for="emailInput">Déjanos tu email para recibir tu diagnóstico en PDF</label>
+        <input type="email" id="emailInput" name="email" placeholder="tu@email.com" required>
+        <input type="text" name="bot-field" class="hp-field" tabindex="-1" autocomplete="off">
+        <button type="submit" class="btn btn-primary">Descargar mi diagnóstico →</button>
+        <p class="error-msg" id="emailError" hidden>Ocurrió un problema al enviar tu email. Intenta de nuevo.</p>
+      </form>
+    </section>
+
+    <!-- 5. PANTALLA FINAL: PDF + CTA -->
+    <section class="screen" id="screen-final" data-screen hidden>
+      <p class="eyebrow">Listo</p>
+      <h2 class="title-sm">Tu diagnóstico está listo</h2>
+      <p class="body-text">Ya tenemos tu resultado. Descarga tu PDF y, cuando quieras, damos el siguiente paso juntas.</p>
+      <button class="btn btn-secondary" id="btnDownloadPdf">↓ Descargar mi PDF</button>
+      <a class="btn btn-primary" id="btnCta" href="#" target="_blank" rel="noopener"></a>
+    </section>
+
+  </main>
+
+  <footer class="footer">Mi Zona de Poder</footer>
+</div>
+
+<script src="assets/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

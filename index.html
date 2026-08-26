@@ -1,104 +1,728 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Zona de Poder</title>
-<meta name="description" content="Descubre qué te está deteniendo hoy para convertir tu experiencia en un negocio rentable y equilibrado.">
+<title>Mi Zona de Poder — Diagnóstico creado por Cora Huerta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --cream:#F4F1E8;
+    --sand:#E4DCCE;
+    --coffee-mid:#634C39;
+    --coffee-dark:#4B2B17;
+    --terracota:#C1603C;
+    --marron:#7C5445;
+    --white-warm:#FFFDFD;
+    --beige-pink:#C9B6AA;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Sora', sans-serif;
+    background:var(--cream);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(193,96,60,0.06), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(124,84,69,0.08), transparent 45%);
+    color:var(--coffee-dark);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .stage{
+    width:100%;
+    max-width:560px;
+    position:relative;
+  }
+  .mark{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:6px;
+    opacity:0.9;
+  }
+  .mark span{
+    font-family:'Sora', sans-serif;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--marron);
+    font-weight:600;
+  }
+  .creator-line{
+    text-align:center;
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--marron);
+    margin:0 0 22px;
+    opacity:0.8;
+  }
+  .card{
+    background:var(--white-warm);
+    border:1px solid var(--sand);
+    border-radius:var(--radius);
+    padding:44px 40px;
+    box-shadow:0 24px 60px -30px rgba(75,43,23,0.35);
+  }
+  .screen{
+    display:none;
+    animation:rise 0.5s ease both;
+  }
+  .screen.active{display:block;}
+  @keyframes rise{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--terracota);
+    font-weight:600;
+    margin:0 0 14px;
+  }
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:34px;
+    line-height:1.15;
+    margin:0 0 14px;
+    color:var(--coffee-dark);
+  }
+  h2.title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+    line-height:1.2;
+    margin:0 0 14px;
+    color:var(--coffee-dark);
+  }
+  p.lede{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--coffee-mid);
+    margin:0 0 28px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--terracota);
+    color:var(--white-warm);
+    border:none;
+    padding:15px 26px;
+    border-radius:999px;
+    font-family:'Sora', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.25s ease, transform 0.15s ease;
+    width:100%;
+    justify-content:center;
+  }
+  .btn:hover{background:var(--marron); transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn:disabled{background:var(--beige-pink); cursor:not-allowed; transform:none;}
+  .btn-ghost{
+    background:none;
+    color:var(--coffee-mid);
+    border:1px solid var(--sand);
+    padding:12px 20px;
+    font-size:14px;
+  }
+  .btn-ghost:hover{background:var(--sand); color:var(--coffee-dark);}
+  input[type="password"], input[type="email"]{
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1.5px solid var(--sand);
+    background:var(--cream);
+    font-family:'Sora', sans-serif;
+    font-size:15px;
+    color:var(--coffee-dark);
+    margin-bottom:14px;
+    outline:none;
+    transition:border-color 0.2s ease;
+  }
+  input[type="password"]:focus, input[type="email"]:focus{
+    border-color:var(--terracota);
+  }
+  .error-msg{
+    color:var(--terracota);
+    font-size:13.5px;
+    margin:-6px 0 14px;
+    min-height:1px;
+  }
+  .progress-wrap{
+    height:6px;
+    background:var(--sand);
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .progress-bar{
+    height:100%;
+    background:var(--terracota);
+    border-radius:999px;
+    transition:width 0.4s ease;
+    width:0%;
+  }
+  .question{
+    font-family:'Fraunces', serif;
+    font-size:21px;
+    font-weight:600;
+    line-height:1.35;
+    margin:0 0 22px;
+    color:var(--coffee-dark);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .option{
+    text-align:left;
+    background:var(--cream);
+    border:1.5px solid var(--sand);
+    border-radius:14px;
+    padding:15px 18px;
+    font-family:'Sora', sans-serif;
+    font-size:14.5px;
+    line-height:1.5;
+    color:var(--coffee-mid);
+    cursor:pointer;
+    transition:all 0.18s ease;
+  }
+  .option:hover{
+    border-color:var(--marron);
+    background:var(--white-warm);
+  }
+  .option.selected{
+    border-color:var(--terracota);
+    background:#FBEFE9;
+    color:var(--coffee-dark);
+    font-weight:600;
+  }
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .archetype-name{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:30px;
+    color:var(--terracota);
+    margin:0 0 6px;
+  }
+  .archetype-tag{
+    font-size:13.5px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--marron);
+    font-weight:600;
+    margin:0 0 18px;
+  }
+  .archetype-desc{
+    font-size:15.5px;
+    line-height:1.65;
+    color:var(--coffee-mid);
+    margin:0 0 30px;
+  }
+  .zones{
+    margin-bottom:32px;
+  }
+  .zones-label{
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--marron);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .zone-row{
+    display:grid;
+    grid-template-columns:120px 1fr 26px;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+  }
+  .zone-label{
+    font-size:13px;
+    color:var(--coffee-mid);
+  }
+  .zone-row.win .zone-label{color:var(--coffee-dark); font-weight:700;}
+  .zone-track{
+    height:9px;
+    background:var(--sand);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .zone-fill{
+    height:100%;
+    border-radius:999px;
+    background:var(--beige-pink);
+    width:0%;
+    transition:width 0.8s ease;
+  }
+  .zone-row.win .zone-fill{background:var(--terracota);}
+  .zone-count{
+    font-size:12.5px;
+    color:var(--coffee-mid);
+    text-align:right;
+  }
+  .divider{
+    height:1px;
+    background:var(--sand);
+    margin:26px 0;
+  }
+  .cta-line{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--coffee-dark);
+    line-height:1.5;
+    margin:0 0 22px;
+  }
+  .fine{
+    font-size:12.5px;
+    color:var(--coffee-mid);
+    text-align:center;
+    margin-top:14px;
+  }
+  .fine a{color:var(--marron);}
+  .final-icon{
+    width:52px;height:52px;
+    margin:0 auto 18px;
+    display:block;
+  }
+  .center{text-align:center;}
+  @media (max-width:480px){
+    .card{padding:32px 24px;}
+    h1.title{font-size:28px;}
+    .archetype-name{font-size:26px;}
+  }
+</style>
 </head>
 <body>
 
-<!-- Netlify necesita ver este formulario "estático" en el HTML para registrarlo en el build,
-     aunque lo enviemos por JS más abajo. No se muestra a la usuaria. -->
-<form name="zona-de-poder-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="email" name="email" />
-  <input type="text" name="arquetipo" />
-  <input type="text" name="bot-field" />
-</form>
-
-<div class="app">
-
-  <!-- Barra de progreso (solo visible durante el quiz) -->
-  <div class="progress-wrap" id="progressWrap" hidden>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="progress-label" id="progressLabel">Pregunta 1 de 6</span>
+<div class="stage">
+  <div class="mark">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="9.5" stroke="#C1603C" stroke-width="1.4"/>
+      <path d="M11 2 L13 10 L11 20 L9 10 Z" fill="#C1603C" opacity="0.85"/>
+    </svg>
+    <span>Mi Zona de Poder</span>
   </div>
+  <p class="creator-line">Diagnóstico creado por Cora Huerta</p>
 
-  <main class="card">
+  <div class="card">
 
-    <!-- 0. PANTALLA DE CONTRASEÑA -->
-    <section class="screen" id="screen-password" data-screen>
-      <p class="eyebrow">Acceso privado</p>
-      <h1 class="title">Mi Zona de Poder</h1>
-      <p class="subtitle">Este espacio es solo para ti. Ingresa tu código de acceso para comenzar.</p>
-      <form id="passwordForm" class="stack">
-        <input type="password" id="passwordInput" placeholder="Código de acceso" autocomplete="off" required>
-        <p class="error-msg" id="passwordError" hidden>Ese código no es correcto. Intenta de nuevo.</p>
-        <button type="submit" class="btn btn-primary">Entrar →</button>
-      </form>
+    <!-- SCREEN 1: Entrada + contraseña -->
+    <section class="screen active" id="screen-entry">
+      <p class="eyebrow">Diagnóstico privado</p>
+      <h1 class="title">Descubre qué te está deteniendo hoy para convertir tu experiencia en un negocio rentable y equilibrado.</h1>
+      <p class="lede">Un diagnóstico de 6 preguntas para mujeres con trayectoria que hoy buscan que todo lo construido por fin les rinda.</p>
+      <input type="password" id="password-input" placeholder="Ingresa tu contraseña de acceso" autocomplete="off">
+      <p class="error-msg" id="password-error"></p>
+      <button class="btn" id="btn-enter">Descubrir mi Zona de Poder →</button>
     </section>
 
-    <!-- 1. PANTALLA DE ENTRADA -->
-    <section class="screen" id="screen-intro" data-screen hidden>
-      <p class="eyebrow">Mi Zona de Poder</p>
-      <h1 class="title">Descubre qué te está deteniendo hoy</h1>
-      <p class="subtitle">para convertir tu experiencia en un negocio rentable y equilibrado.</p>
-      <button class="btn btn-primary" id="btnToInstructions">Descubrir mi Zona de Poder →</button>
+    <!-- SCREEN 2: Instrucciones -->
+    <section class="screen" id="screen-instructions">
+      <p class="eyebrow">Antes de empezar</p>
+      <h2 class="title">Responde 6 preguntas rápidas y sencillas sobre tu negocio hoy.</h2>
+      <p class="lede">Al final descubrirás qué está frenando que tu experiencia se convierta en un negocio rentable y equilibrado — y hacia dónde dar tu siguiente paso.</p>
+      <button class="btn" id="btn-start-quiz">Comenzar →</button>
     </section>
 
-    <!-- 2. INSTRUCCIONES -->
-    <section class="screen" id="screen-instructions" data-screen hidden>
-      <h2 class="title-sm">Antes de empezar</h2>
-      <p class="body-text">Responde 6 preguntas rápidas y sencillas sobre tu negocio hoy.</p>
-      <p class="body-text">Al final descubrirás qué está frenando que tu experiencia se convierta en un negocio rentable y equilibrado — y hacia dónde dar tu siguiente paso.</p>
-      <button class="btn btn-primary" id="btnStartQuiz">Comenzar →</button>
-    </section>
-
-    <!-- 3. QUIZ (preguntas dinámicas) -->
-    <section class="screen" id="screen-quiz" data-screen hidden>
-      <h2 class="question-text" id="questionText"></h2>
-      <div class="options" id="optionsContainer"></div>
-      <div class="quiz-nav">
-        <button class="btn btn-ghost" id="btnBack">← Atrás</button>
+    <!-- SCREEN 3: Quiz -->
+    <section class="screen" id="screen-quiz">
+      <p class="eyebrow" id="quiz-eyebrow">Pregunta 1 de 6</p>
+      <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+      <p class="question" id="question-text"></p>
+      <div class="options" id="options-wrap"></div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="btn-back" style="width:auto;">← Atrás</button>
+        <span></span>
       </div>
     </section>
 
-    <!-- 4. RESULTADO -->
-    <section class="screen" id="screen-result" data-screen hidden>
-      <div class="result-visual" id="resultVisual"></div>
-      <p class="eyebrow" id="resultBlockLabel"></p>
-      <h2 class="title-sm" id="resultName"></h2>
-      <p class="body-text" id="resultDescription"></p>
-      <p class="body-text small-note">Esto es lo que te está deteniendo hoy. El siguiente paso — la llamada — es donde resolvemos el qué hacer con eso.</p>
+    <!-- SCREEN 4: Resultado + email -->
+    <section class="screen" id="screen-result">
+      <p class="eyebrow">Tu diagnóstico</p>
+      <p class="archetype-tag" id="result-blockline"></p>
+      <h2 class="archetype-name" id="result-name"></h2>
+      <p class="archetype-desc" id="result-desc"></p>
 
-      <form id="emailForm" class="stack email-form">
-        <label class="field-label" for="emailInput">Déjanos tu email para recibir tu diagnóstico en PDF</label>
-        <input type="email" id="emailInput" name="email" placeholder="tu@email.com" required>
-        <input type="text" name="bot-field" class="hp-field" tabindex="-1" autocomplete="off">
-        <button type="submit" class="btn btn-primary">Descargar mi diagnóstico →</button>
-        <p class="error-msg" id="emailError" hidden>Ocurrió un problema al enviar tu email. Intenta de nuevo.</p>
-      </form>
+      <div class="zones" id="zones-wrap">
+        <p class="zones-label">Tu mapa de zonas</p>
+        <div id="zones-list"></div>
+      </div>
+
+      <p style="font-size:13.5px; color:var(--coffee-mid); line-height:1.6; margin-bottom:24px;">
+        Esto es <strong style="color:var(--coffee-dark);">lo que te detiene</strong>. El siguiente paso es donde resolvemos <strong style="color:var(--coffee-dark);">qué hacer con eso</strong>.
+      </p>
+
+      <div class="divider"></div>
+
+      <p class="lede" style="margin-bottom:16px;">Deja tu email y descarga tu diagnóstico completo en PDF:</p>
+      <input type="email" id="email-input" placeholder="tu@email.com">
+      <p class="error-msg" id="email-error"></p>
+      <button class="btn" id="btn-get-pdf">Descargar mi diagnóstico en PDF →</button>
     </section>
 
-    <!-- 5. PANTALLA FINAL: PDF + CTA -->
-    <section class="screen" id="screen-final" data-screen hidden>
-      <p class="eyebrow">Listo</p>
-      <h2 class="title-sm">Tu diagnóstico está listo</h2>
-      <p class="body-text">Ya tenemos tu resultado. Descarga tu PDF y, cuando quieras, damos el siguiente paso juntas.</p>
-      <button class="btn btn-secondary" id="btnDownloadPdf">↓ Descargar mi PDF</button>
-      <a class="btn btn-primary" id="btnCta" href="#" target="_blank" rel="noopener"></a>
+    <!-- SCREEN 5: Final / CTA -->
+    <section class="screen" id="screen-final">
+      <svg class="final-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="26" r="25" stroke="#C1603C" stroke-width="1.6"/>
+        <path d="M16 27L23 34L37 19" stroke="#C1603C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2 class="title center">Tu PDF ya está listo.</h2>
+      <p class="lede center" id="final-sub">Revisa tu descarga — ahí tienes tu bloqueo completo y por dónde empezar a soltarlo.</p>
+      <p class="cta-line center" id="final-cta-line"></p>
+      <a class="btn" id="btn-cta" href="#" target="_blank" rel="noopener">Escríbeme por WhatsApp →</a>
+      <p class="fine">Escríbeme por WhatsApp, sin costo y sin compromiso.</p>
     </section>
 
-  </main>
-
-  <footer class="footer">Mi Zona de Poder</footer>
+  </div>
 </div>
 
-<script src="assets/jspdf.umd.min.js"></script>
-<script src="script.js"></script>
+<script>
+/* ====== CONFIGURACIÓN EDITABLE ====== */
+const ACCESS_PASSWORD = "poder2026";           // contraseña de acceso a la mini app
+const WHATSAPP_NUMBER = "524445827448";        // número de WhatsApp (sin +, sin espacios)
+
+/* ====== CONTENIDO ====== */
+const ARCHETYPES = {
+  dispersion: {
+    name: "La Experta Dispersa",
+    tag: "Tu bloqueo: la dispersión.",
+    desc: "Sabes hacer muchas cosas — y eso es tu fortaleza, pero también lo que hoy te detiene. Mientras no elijas una dirección clara, tu experiencia se queda repartida en mil direcciones, y tu negocio no logra la estabilidad que buscas. No te falta talento — te falta soltar para poder enfocar.",
+    cta: "Hablemos de cómo elegir tu enfoque sin perder lo que ya construiste.",
+    whatsappMsg: "Hola, hice el diagnóstico de Mi Zona de Poder y mi resultado fue La Experta Dispersa. Me gustaría platicar sobre esto."
+  },
+  precio: {
+    name: "La Experiencia que se Regala",
+    tag: "Tu bloqueo: regalar tu experiencia.",
+    desc: "Sabes exactamente qué haces y lo haces bien — pero sigues regalando una parte de tu experiencia: consejos de más, tiempo extra, favores que 'no es nada'. Hoy trabajas mucho para lo que realmente ganas, y eso no es falta de mercado: es el permiso que aún no te has dado para dejar de regalar lo que tu trayectoria ya vale.",
+    cta: "Hablemos de cómo dejar de regalar lo que ya sabes hacer bien.",
+    whatsappMsg: "Hola, hice el diagnóstico de Mi Zona de Poder y mi resultado fue La Experiencia que se Regala. Me gustaría platicar sobre esto."
+  },
+  sistema: {
+    name: "La Creativa sin Sistema",
+    tag: "Tu bloqueo: la falta de sistema.",
+    desc: "Brillas en cada proyecto — pero cada uno empieza de cero. Sin un proceso repetible, tu negocio depende 100% de tu energía del día, y eso te está costando el equilibrio que buscas en esta etapa. Tu experiencia ya sabe qué funciona; solo falta convertirlo en un método que puedas repetir sin agotarte.",
+    cta: "Hablemos de cómo convertir lo que haces en un proceso repetible.",
+    whatsappMsg: "Hola, hice el diagnóstico de Mi Zona de Poder y mi resultado fue La Creativa sin Sistema. Me gustaría platicar sobre esto."
+  },
+  visibilidad: {
+    name: "La Invisible con Trayectoria",
+    tag: "Tu bloqueo: la visibilidad.",
+    desc: "Tienes años de experiencia y resultados sólidos — pero tu mensaje no está llegando a quien lo necesita. No es falta de preparación: es que tu trayectoria aún no se ve con la claridad que merece, y eso frena que lleguen los ingresos recurrentes que buscas.",
+    cta: "Hablemos de cómo hacer que tu experiencia se vea.",
+    whatsappMsg: "Hola, hice el diagnóstico de Mi Zona de Poder y mi resultado fue La Invisible con Trayectoria. Me gustaría platicar sobre esto."
+  }
+};
+
+const ZONE_ORDER = ["dispersion", "precio", "sistema", "visibilidad"];
+const ZONE_LABELS = { dispersion:"Dispersión", precio:"Experiencia regalada", sistema:"Sistema", visibilidad:"Visibilidad" };
+
+const QUESTIONS = [
+  {
+    text: 'Cuando alguien te pregunta "¿en qué te especializas?", ¿qué te pasa?',
+    options: [
+      { text:"Me cuesta responder en una frase, siento que hago de todo un poco", cat:"dispersion" },
+      { text:"Sé exactamente qué hago, pero termino regalando tiempo y conocimiento que debería cobrar", cat:"precio" },
+      { text:"Explico bien lo que hago, pero cada proyecto es distinto, no tengo un proceso fijo", cat:"sistema" },
+      { text:"Tengo clarísimo mi expertise, pero siento que casi nadie nuevo me encuentra", cat:"visibilidad" }
+    ]
+  },
+  {
+    text: "¿Cómo describirías tu semana de trabajo hoy?",
+    options: [
+      { text:"Salto entre distintos tipos de servicios, cada semana es diferente", cat:"dispersion" },
+      { text:"Trabajo mucho, pero buena parte de lo que doy no lo cobro — lo regalo 'de más'", cat:"precio" },
+      { text:"Repito lo mismo con cada clienta, pero empezando desde cero cada vez", cat:"sistema" },
+      { text:"Tengo procesos claros y buenos resultados, pero llegan pocas clientas nuevas", cat:"visibilidad" }
+    ]
+  },
+  {
+    text: "Cuando piensas en todo lo que has estudiado y certificado...",
+    options: [
+      { text:"Siento que podría ofrecer varias cosas distintas y no sé por cuál decidirme", cat:"dispersion" },
+      { text:"Sé cuál es mi fuerte, pero sigo dando consejos, tiempo extra y favores sin cobrarlos", cat:"precio" },
+      { text:"Tengo mucho conocimiento, pero no lo he convertido en un método propio", cat:"sistema" },
+      { text:"Tengo el conocimiento, pero nadie lo asocia conmigo todavía", cat:"visibilidad" }
+    ]
+  },
+  {
+    text: "¿Qué te frustra más hoy de tu negocio?",
+    options: [
+      { text:"No sé en qué enfocarme, y eso me hace decir sí a todo", cat:"dispersion" },
+      { text:"Trabajo mucho para lo que realmente gano, porque termino regalando parte de lo que hago", cat:"precio" },
+      { text:"Cada clienta me consume un tiempo distinto, no puedo predecir mi carga", cat:"sistema" },
+      { text:"Sé que hago un buen trabajo, pero pocas personas nuevas lo saben", cat:"visibilidad" }
+    ]
+  },
+  {
+    text: "Si pudieras soltar algo de tu negocio hoy mismo...",
+    options: [
+      { text:"Soltaría la mitad de los servicios que ofrezco", cat:"dispersion" },
+      { text:"Soltaría la costumbre de regalar mi tiempo y mi conocimiento 'por ayudar'", cat:"precio" },
+      { text:"Soltaría la costumbre de improvisar cada proyecto desde cero", cat:"sistema" },
+      { text:'Soltaría la idea de que "el buen trabajo habla por sí solo"', cat:"visibilidad" }
+    ]
+  },
+  {
+    text: "Cuando imaginas tu negocio dentro de un año, funcionando de forma rentable y equilibrada, ¿qué es lo primero que tendría que cambiar?",
+    options: [
+      { text:'Tendría una oferta clara, no "un poco de todo"', cat:"dispersion" },
+      { text:"Dejaría de regalar lo que sé hacer bien, y empezaría a cobrarlo como merece", cat:"precio" },
+      { text:"Tendría un proceso que no dependiera de reinventarme cada vez", cat:"sistema" },
+      { text:"Sería conocida por lo que hago, sin tener que explicarlo cada vez", cat:"visibilidad" }
+    ]
+  }
+];
+
+/* ====== ESTADO ====== */
+let currentQuestion = 0;
+let answers = [];              // { qIndex, cat }
+let selectedOptionIndex = null;
+let resultKey = null;
+
+/* ====== NAVEGACIÓN DE PANTALLAS ====== */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* ====== PANTALLA 1: contraseña ====== */
+document.getElementById("btn-enter").addEventListener("click", () => {
+  const val = document.getElementById("password-input").value.trim();
+  const errEl = document.getElementById("password-error");
+  if (val === ACCESS_PASSWORD) {
+    errEl.textContent = "";
+    showScreen("screen-instructions");
+  } else {
+    errEl.textContent = "Esa contraseña no es correcta. Inténtalo de nuevo.";
+  }
+});
+document.getElementById("password-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") document.getElementById("btn-enter").click();
+});
+
+/* ====== PANTALLA 2: instrucciones ====== */
+document.getElementById("btn-start-quiz").addEventListener("click", () => {
+  currentQuestion = 0;
+  answers = [];
+  renderQuestion();
+  showScreen("screen-quiz");
+});
+
+/* ====== PANTALLA 3: quiz ====== */
+function renderQuestion(){
+  const q = QUESTIONS[currentQuestion];
+  document.getElementById("quiz-eyebrow").textContent = `Pregunta ${currentQuestion + 1} de ${QUESTIONS.length}`;
+  document.getElementById("progress-bar").style.width = `${((currentQuestion) / QUESTIONS.length) * 100}%`;
+  document.getElementById("question-text").textContent = q.text;
+
+  const wrap = document.getElementById("options-wrap");
+  wrap.innerHTML = "";
+  selectedOptionIndex = answers[currentQuestion] ? q.options.findIndex(o => o.cat === answers[currentQuestion].cat) : null;
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option" + (selectedOptionIndex === idx ? " selected" : "");
+    btn.textContent = opt.text;
+    btn.addEventListener("click", () => selectOption(idx));
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById("btn-back").style.visibility = currentQuestion === 0 ? "hidden" : "visible";
+}
+
+function selectOption(idx){
+  const q = QUESTIONS[currentQuestion];
+  answers[currentQuestion] = { qIndex: currentQuestion, cat: q.options[idx].cat };
+
+  document.querySelectorAll("#options-wrap .option").forEach((el, i) => {
+    el.classList.toggle("selected", i === idx);
+  });
+
+  setTimeout(() => {
+    if (currentQuestion < QUESTIONS.length - 1) {
+      currentQuestion++;
+      renderQuestion();
+    } else {
+      document.getElementById("progress-bar").style.width = "100%";
+      computeResult();
+      showScreen("screen-result");
+    }
+  }, 260);
+}
+
+document.getElementById("btn-back").addEventListener("click", () => {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    renderQuestion();
+  }
+});
+
+/* ====== CÁLCULO DE RESULTADO ====== */
+function computeResult(){
+  const counts = { dispersion:0, precio:0, sistema:0, visibilidad:0 };
+  const firstSeenOrder = [];
+
+  answers.forEach(a => {
+    counts[a.cat]++;
+    if (!firstSeenOrder.includes(a.cat)) firstSeenOrder.push(a.cat);
+  });
+
+  const maxCount = Math.max(...Object.values(counts));
+  const tied = ZONE_ORDER.filter(cat => counts[cat] === maxCount);
+
+  resultKey = tied.length === 1
+    ? tied[0]
+    : firstSeenOrder.find(cat => tied.includes(cat));
+
+  renderResult(counts, maxCount);
+}
+
+function renderResult(counts, maxCount){
+  const arch = ARCHETYPES[resultKey];
+  document.getElementById("result-blockline").textContent = arch.tag;
+  document.getElementById("result-name").textContent = arch.name;
+  document.getElementById("result-desc").textContent = arch.desc;
+  document.getElementById("final-cta-line").textContent = `"${arch.cta}"`;
+  document.getElementById("btn-cta").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
+
+  const zonesList = document.getElementById("zones-list");
+  zonesList.innerHTML = "";
+  ZONE_ORDER.forEach(cat => {
+    const row = document.createElement("div");
+    row.className = "zone-row" + (cat === resultKey ? " win" : "");
+    row.innerHTML = `
+      <span class="zone-label">${ZONE_LABELS[cat]}</span>
+      <div class="zone-track"><div class="zone-fill" data-target="${(counts[cat] / QUESTIONS.length) * 100}"></div></div>
+      <span class="zone-count">${counts[cat]}/${QUESTIONS.length}</span>
+    `;
+    zonesList.appendChild(row);
+  });
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      document.querySelectorAll(".zone-fill").forEach(el => {
+        el.style.width = el.getAttribute("data-target") + "%";
+      });
+    }, 80);
+  });
+}
+
+/* ====== PANTALLA 4: captura de email + PDF ====== */
+document.getElementById("btn-get-pdf").addEventListener("click", () => {
+  const emailInput = document.getElementById("email-input");
+  const errEl = document.getElementById("email-error");
+  const email = emailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    errEl.textContent = "Ingresa un email válido para recibir tu diagnóstico.";
+    return;
+  }
+  errEl.textContent = "";
+
+  captureLead(email, resultKey);
+
+  generatePDF(email);
+  showScreen("screen-final");
+});
+
+function captureLead(email, archetypeKey){
+  // Conecta con la función de Netlify que crea/actualiza el contacto en Systeme.io
+  // y dispara el correo automático con el PDF correspondiente.
+  fetch('/.netlify/functions/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, archetype: archetypeKey })
+  })
+    .then(res => res.json())
+    .then(data => { if (!data.ok) console.warn('Systeme.io:', data.error); })
+    .catch(err => console.warn('No se pudo contactar la función /subscribe:', err));
+}
+
+function generatePDF(email){
+  const arch = ARCHETYPES[resultKey];
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+
+    const marginX = 56;
+    let y = 90;
+
+    doc.setFillColor(244, 241, 232);
+    doc.rect(0, 0, 595, 842, "F");
+
+    doc.setTextColor(193, 96, 60);
+    doc.setFont("times", "bolditalic");
+    doc.setFontSize(13);
+    doc.text("MI ZONA DE PODER", marginX, y);
+
+    y += 40;
+    doc.setTextColor(75, 43, 23);
+    doc.setFont("times", "bold");
+    doc.setFontSize(26);
+    doc.text(arch.name, marginX, y);
+
+    y += 26;
+    doc.setFont("times", "italic");
+    doc.setFontSize(14);
+    doc.setTextColor(124, 84, 69);
+    doc.text(arch.tag, marginX, y);
+
+    y += 34;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor(99, 76, 57);
+    const descLines = doc.splitTextToSize(arch.desc, 480);
+    doc.text(descLines, marginX, y);
+    y += descLines.length * 16 + 30;
+
+    doc.setDrawColor(228, 220, 206);
+    doc.line(marginX, y, 595 - marginX, y);
+    y += 34;
+
+    doc.setFont("times", "bolditalic");
+    doc.setFontSize(14);
+    doc.setTextColor(75, 43, 23);
+    const ctaLines = doc.splitTextToSize(`"${arch.cta}"`, 480);
+    doc.text(ctaLines, marginX, y);
+    y += ctaLines.length * 18 + 26;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.setTextColor(124, 84, 69);
+    doc.text("Escríbeme por WhatsApp:", marginX, y);
+    y += 16;
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
+    doc.setTextColor(193, 96, 60);
+    doc.textWithLink(waUrl, marginX, y, { url: waUrl });
+
+    doc.save("mi-zona-de-poder-diagnostico.pdf");
+  } catch (err) {
+    console.error("No se pudo generar el PDF:", err);
+  }
+}
+</script>
 </body>
 </html>

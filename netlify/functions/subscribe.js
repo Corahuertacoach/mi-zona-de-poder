@@ -21,9 +21,7 @@ const ARCHETYPES = {
     file: "dispersion.pdf",
   },
   precio: {
-    bloqueo: "La Especialista sin Precio — tu bloqueo: el precio",
-    file: "precio.pdf",
-  },
+    bloqueo: "La Experiencia que se Regala — tu bloqueo: regalar tu experiencia",
   sistema: {
     bloqueo: "La Creativa sin Sistema — tu bloqueo: la falta de sistema",
     file: "sistema.pdf",

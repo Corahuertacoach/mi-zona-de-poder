@@ -22,6 +22,8 @@ const ARCHETYPES = {
   },
   precio: {
     bloqueo: "La Experiencia que se Regala — tu bloqueo: regalar tu experiencia",
+    file: "precio.pdf",
+  },
   sistema: {
     bloqueo: "La Creativa sin Sistema — tu bloqueo: la falta de sistema",
     file: "sistema.pdf",

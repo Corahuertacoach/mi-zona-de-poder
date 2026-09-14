@@ -706,14 +706,17 @@ function generatePDF(email){
     doc.text(ctaLines, marginX, y);
     y += ctaLines.length * 18 + 26;
 
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
-    doc.setTextColor(124, 84, 69);
-    doc.text("Escríbeme por WhatsApp:", marginX, y);
-    y += 16;
-    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
-    doc.setTextColor(95, 67, 44);
-    doc.textWithLink(waUrl, marginX, y, { url: waUrl });
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
+const btnWidth = 200;
+const btnHeight = 32;
+doc.setFillColor(193, 96, 60);
+doc.roundedRect(marginX, y, btnWidth, btnHeight, 6, 6, "F");
+doc.setTextColor(255, 255, 255);
+doc.setFont("helvetica", "bold");
+doc.setFontSize(12);
+doc.text("Escríbeme por WhatsApp \u2192", marginX + 12, y + btnHeight / 2 + 4);
+doc.link(marginX, y, btnWidth, btnHeight, { url: waUrl });
+y += btnHeight + 10;
 
     doc.save("mi-zona-de-poder-ruta-de-crecimiento.pdf");
   } catch (err) {

@@ -764,7 +764,7 @@ if ('serviceWorker' in navigator) {
       showScreen('screen-instructions');
     } else if (isIOS()) {
       document.getElementById('install-modal-text').textContent =
-        'Toca el ícono de Compartir (el cuadrito con la flecha hacia arriba) abajo en Safari, y elige "Agregar a pantalla de inicio".';
+                'En Safari, busca el ícono de Compartir (o los 3 puntitos ⋯) y toca "Agregar a pantalla de inicio".';
       document.getElementById('install-modal-overlay').style.display = 'flex';
     } else {
       document.getElementById('install-modal-text').textContent =

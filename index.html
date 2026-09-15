@@ -324,7 +324,22 @@
   <p class="app-name">Tu Zona de Poder: La Ruta de tu Crecimiento</p>
 
   <div class="card">
+<!-- SCREEN 0: Instalar o responder -->
+<section class="screen active" id="screen-install">
+  <p class="eyebrow" style="text-align:center;">Antes de empezar</p>
+  <h2 class="title" style="text-align:center;">¿Cómo prefieres continuar?</h2>
+  <p class="lede" style="text-align:center;">Instala Mi Zona de Poder en tu celular para volver cuando quieras a tu ruta de crecimiento, sin tener que buscar el link otra vez.</p>
+  <button class="btn" id="btn-install-app" style="width:100%;margin-bottom:10px;">⬇ Descargar la app ahora</button>
+  <button class="btn" id="btn-skip-install" style="width:100%;background:transparent;color:#634C39;border:1.5px solid #C9B6AA;box-shadow:none;">Responder ahora mismo →</button>
+  <p style="text-align:center;font-size:12px;color:#7C5445;margin-top:14px;">Toma menos de 1 minuto instalarla</p>
+</section>
 
+<div id="install-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(75,43,23,0.55);z-index:50;align-items:center;justify-content:center;">
+  <div style="background:#F4F1E8;border-radius:16px;padding:28px 22px;max-width:320px;margin:16px;text-align:center;">
+    <p id="install-modal-text" style="font-size:14px;color:#4B2B17;line-height:1.5;margin-bottom:20px;"></p>
+    <button class="btn" id="btn-install-done" style="width:100%;">Ya la instalé, continuar →</button>
+  </div>
+</div>
     <!-- SCREEN 1: Entrada + contraseña -->
     <section class="screen" id="screen-entry">
       <p class="eyebrow">La ruta de tu crecimiento</p>
@@ -336,7 +351,7 @@
     </section>
 
     <!-- SCREEN 2: Instrucciones -->
-    <section class="screen active" id="screen-instructions">
+    <section class="screen" id="screen-instructions">
       <p class="eyebrow">Antes de empezar</p>
       <h2 class="title">Responde 6 preguntas rápidas y sencillas sobre tu negocio hoy.</h2>
       <p class="lede">Al final descubrirás qué está frenando que tu experiencia se convierta en un negocio rentable y equilibrado — y hacia dónde dar tu siguiente paso.</p>
@@ -730,6 +745,42 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js');
   });
 }
+</script><script>
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+  });
+
+  function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.MSStream;
+  }
+
+  document.getElementById('btn-install-app').addEventListener('click', async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      showScreen('screen-instructions');
+    } else if (isIOS()) {
+      document.getElementById('install-modal-text').textContent =
+        'Toca el ícono de Compartir (el cuadrito con la flecha hacia arriba) abajo en Safari, y elige "Agregar a pantalla de inicio".';
+      document.getElementById('install-modal-overlay').style.display = 'flex';
+    } else {
+      document.getElementById('install-modal-text').textContent =
+        'No pudimos abrir la instalación automática. Si abriste este link desde Instagram o WhatsApp, ábrelo en Chrome o Safari para instalarlo.';
+      document.getElementById('install-modal-overlay').style.display = 'flex';
+    }
+  });
+
+  document.getElementById('btn-install-done').addEventListener('click', () => {
+    document.getElementById('install-modal-overlay').style.display = 'none';
+    showScreen('screen-instructions');
+  });
+
+  document.getElementById('btn-skip-install').addEventListener('click', () => {
+    showScreen('screen-instructions');
+  });
 </script>
 </body>
 </html>

@@ -619,6 +619,7 @@ function computeResult(){
 
 function renderResult(counts, maxCount){
   const arch = ARCHETYPES[resultKey];
+  if (window.clarity) { clarity("event", "vio_resultado"); }
   document.getElementById("result-blockline").textContent = arch.tag;
   document.getElementById("result-name").textContent = arch.name;
   document.getElementById("result-desc").textContent = arch.desc;

@@ -661,7 +661,7 @@ document.getElementById("btn-get-pdf").addEventListener("click", () => {
   errEl.textContent = "";
 
   captureLead(email, resultKey);
-
+if (window.clarity) { clarity("event", "dejo_email"); }
   generatePDF(email);
   showScreen("screen-final");
 });

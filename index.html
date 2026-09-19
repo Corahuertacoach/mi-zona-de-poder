@@ -408,7 +408,7 @@
       </svg>
       <h2 class="title center">Tu PDF ya está listo.</h2>
       <p class="lede center" id="final-sub">Revisa tu descarga — ahí tienes tu bloqueo completo y por dónde empezar a soltarlo.</p>
-      <p class="cta-line center" id="final-cta-line"></p>
+<p class="lede center" style="margin-top:8px;">También te lo mandamos a tu correo, por si prefieres guardarlo ahí o revisarlo después.</p> <p class="cta-line center" id="final-cta-line"></p>
       <a class="btn" id="btn-cta" href="#" target="_blank" rel="noopener">Escríbeme por WhatsApp →</a>
       <p class="fine">Escríbeme por WhatsApp, sin costo y sin compromiso.</p>
     </section>
@@ -724,7 +724,12 @@ function generatePDF(email){
     const descLines = doc.splitTextToSize(arch.desc, 480);
     doc.text(descLines, marginX, y);
     y += descLines.length * 16 + 30;
-
+doc.setFont("helvetica", "italic");
+doc.setFontSize(10.5);
+doc.setTextColor(124, 84, 69);
+const noEncasillaLines = doc.splitTextToSize("Esto es un punto de partida, no una etiqueta. Es lo que hoy se nota con más fuerza — y eso puede cambiar en cuanto empieces a moverlo.", 480);
+doc.text(noEncasillaLines, marginX, y);
+y += noEncasillaLines.length * 14 + 20;
     doc.setDrawColor(228, 220, 206);
     doc.line(marginX, y, 595 - marginX, y);
     y += 34;
@@ -735,8 +740,36 @@ function generatePDF(email){
     const ctaLines = doc.splitTextToSize(`"${arch.cta}"`, 480);
     doc.text(ctaLines, marginX, y);
     y += ctaLines.length * 18 + 26;
+doc.setDrawColor(228, 220, 206);
+doc.line(marginX, y, 595 - marginX, y);
+y += 24;
 
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
+doc.setFont("helvetica", "bold");
+doc.setFontSize(12);
+doc.setTextColor(75, 43, 23);
+doc.text("Tu paso de hoy", marginX, y);
+y += 18;
+
+doc.setFont("helvetica", "normal");
+doc.setFontSize(11.5);
+doc.setTextColor(99, 76, 57);
+const pasoLines = doc.splitTextToSize(arch.pasoHoy, 480);
+doc.text(pasoLines, marginX, y);
+y += pasoLines.length * 15 + 14;
+
+doc.setFont("helvetica", "italic");
+doc.setFontSize(11);
+doc.setTextColor(124, 84, 69);
+const sostenerLines = doc.splitTextToSize(arch.fraseSostener, 480);
+doc.text(sostenerLines, marginX, y);
+y += sostenerLines.length * 15 + 26;
+doc.setFont("times", "italic");
+doc.setFontSize(11.5);
+doc.setTextColor(99, 76, 57);
+const guiaLines = doc.splitTextToSize("Yo puedo guiarte a resolver esto — con el orden y el acompañamiento que hacen que sí se sostenga.", 480);
+doc.text(guiaLines, marginX, y);
+y += guiaLines.length * 15 + 18;
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(arch.whatsappMsg)}`;
 const btnWidth = 200;
 const btnHeight = 32;
 doc.setFillColor(193, 96, 60);

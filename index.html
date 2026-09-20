@@ -835,6 +835,21 @@ if ('serviceWorker' in navigator) {
   document.getElementById('btn-skip-install').addEventListener('click', () => {
     showScreen('screen-instructions');
   });
+  document.getElementById('btn-install-app-final').addEventListener('click', async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+  } else if (isIOS()) {
+    document.getElementById('install-modal-text').textContent =
+      'En Safari, busca el ícono de Compartir (o los 3 puntitos ⋯) y toca "Agregar a pantalla de inicio".';
+    document.getElementById('install-modal-overlay').style.display = 'flex';
+  } else {
+    document.getElementById('install-modal-text').textContent =
+      'No pudimos abrir la instalación automática. Si abriste este link desde Instagram o WhatsApp, ábrelo en Chrome o Safari para instalarlo.';
+    document.getElementById('install-modal-overlay').style.display = 'flex';
+  }
+});
 </script>
 </body>
 </html>
